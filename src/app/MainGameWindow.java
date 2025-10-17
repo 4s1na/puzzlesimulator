@@ -1,3 +1,5 @@
+package app;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,73 +17,63 @@ public class MainGameWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // top panel - welcome
-        JPanel topPanel = new JPanel();
+        // top panel - welcome + back button
+        JPanel topPanel = new JPanel(new BorderLayout());
         JLabel welcomeLabel = new JLabel("Choose a game to play:");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        topPanel.add(welcomeLabel);
+        topPanel.add(welcomeLabel, BorderLayout.CENTER);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.addActionListener(e -> goBack());
+        topPanel.add(backBtn, BorderLayout.WEST);
+
         add(topPanel, BorderLayout.NORTH);
 
-        // center panel - game buttons
+        // center panel - 3 game buttons + leaderboard
         JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(2, 3, 20, 20));
+        centerPanel.setLayout(new GridLayout(2, 2, 20, 20));
 
         JButton ticTacToeBtn = new JButton("Tic Tac Toe");
-        JButton mazeBtn = new JButton("Maze");
         JButton quizBtn = new JButton("Quiz");
-        JButton cardMemoryBtn = new JButton("Card Memory");
-        JButton pacmanBtn = new JButton("Pac-Man Riddles");
+        JButton mazeBtn = new JButton("Maze");
         JButton leaderboardBtn = new JButton("Leaderboard");
 
         centerPanel.add(ticTacToeBtn);
-        centerPanel.add(mazeBtn);
         centerPanel.add(quizBtn);
-        centerPanel.add(cardMemoryBtn);
-        centerPanel.add(pacmanBtn);
+        centerPanel.add(mazeBtn);
         centerPanel.add(leaderboardBtn);
 
         add(centerPanel, BorderLayout.CENTER);
 
         // button actions
         ticTacToeBtn.addActionListener(e -> playTicTacToe());
-        mazeBtn.addActionListener(e -> playMaze());
         quizBtn.addActionListener(e -> playQuiz());
-        cardMemoryBtn.addActionListener(e -> playCardMemory());
-        pacmanBtn.addActionListener(e -> playPacMan());
+        mazeBtn.addActionListener(e -> playMaze());
         leaderboardBtn.addActionListener(e -> showLeaderboard());
 
         setVisible(true);
     }
 
-    // MainGameWindow.java
-private void playTicTacToe() {
-    // open the actual Tic Tac Toe game window
-    new TicTacToeGame(currentUser);
-}
-
-    private void playMaze() {
-        JOptionPane.showMessageDialog(this, "Maze is starting...");
+    private void playTicTacToe() {
+        new TicTacToeGame(currentUser);
     }
 
     private void playQuiz() {
-        JOptionPane.showMessageDialog(this, "Quiz is starting...");
+        new QuizGame(currentUser);
     }
 
-    private void playCardMemory() {
-        JOptionPane.showMessageDialog(this, "Card Memory is starting...");
-    }
-
-    private void playPacMan() {
-        JOptionPane.showMessageDialog(this, "Pac-Man Riddles is starting...");
-    }
 
     private void showLeaderboard() {
-        JOptionPane.showMessageDialog(this, "Leaderboard coming soon!");
+    new Leaderboard();
+}
+
+    private void goBack() {
+        this.dispose(); // close main window
+        new LoginForm(); // go back to login page
     }
 
     // for testing
     public static void main(String[] args) {
-        // just test with a dummy user
         User dummy = new User(1, "ash", "ash@example.com", "1234");
         new MainGameWindow(dummy);
     }
